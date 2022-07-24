@@ -1,0 +1,445 @@
+/*
+	HW3-Ex1
+-------------------------------------------------------------------------------------------------------
+*/
+
+
+package csd;
+
+
+class App {
+       public static void main(String [] args)
+       {
+              Test.run();          
+       }
+}
+
+
+class Test{
+	public static void run() {
+		for(int i = 100; i < 1000; i++) {
+			if(NumberUtil.checkForConditions(i) == true)
+				System.out.println(i);
+		}
+		
+		// Tested, all work
+		//System.out.print(NumberUtil.findReverse(256));
+		//System.out.print(NumberUtil.findFirstTwoDigits(256));
+		//System.out.print(NumberUtil.findLastTwoDigits(256));
+		//System.out.print(NumberUtil.findReversedFirstTwoDigits(256));
+		//System.out.print(NumberUtil.findReversedLastTwoDigits(256));
+	}
+}
+
+class NumberUtil {		
+   public static boolean isPrime(long a)
+   {
+	   if(a <= 1)
+		   return false;
+	   
+	   if(a % 2 == 0)
+		   return a == 2;
+	   
+	   for(int i = 3; i * i <= a; i += 2) {
+		   if(a % i == 0)
+			   return false;
+	   }
+	   
+		return true;
+   }
+   
+   public static int findReverse(int a) {
+	   int numberReversed = 0;
+	   
+	   for(int i = 0; i < 3; i++) {
+		   numberReversed = numberReversed * 10;
+		   numberReversed = numberReversed + a % 10;
+		   a /= 10;
+	   	}
+	   return numberReversed;
+   }
+   
+   public static int findFirstTwoDigits(int a) {
+	   return a / 10;
+   }
+   
+   public static int findLastTwoDigits(int a) {
+	   int lastTwoDigits = 0;
+	   int firstDigit = 0;
+	   
+	   firstDigit = a / 100;
+	   lastTwoDigits = a % (firstDigit * 100);
+	   
+	   return lastTwoDigits;
+   }
+   
+   public static int findReversedFirstTwoDigits(int a) {
+	   return NumberUtil.findReverse(a) / 10;
+   }
+   
+   public static int findReversedLastTwoDigits(int a) {
+	   return NumberUtil.findLastTwoDigits(NumberUtil.findReverse(a));
+   }
+   
+   public static boolean checkForConditions(int a) {
+	  return (NumberUtil.findReverse(a) > a) && NumberUtil.isPrime(a) 
+			  && NumberUtil.isPrime(NumberUtil.findFirstTwoDigits(a)) 
+			  && NumberUtil.isPrime(NumberUtil.findLastTwoDigits(a))
+			  && NumberUtil.isPrime(NumberUtil.findReversedFirstTwoDigits(a)) 
+			  && NumberUtil.isPrime(NumberUtil.findReversedLastTwoDigits(a));
+   }
+}
+
+/*
+	HW3-Ex2
+-------------------------------------------------------------------------------------------------------
+*/
+
+
+package csd;
+
+
+class App {
+       public static void main(String [] args)
+       {
+              Test.run();          
+       }
+}
+
+
+class Test{
+	public static void run() {
+		java.util.Scanner kb = new java.util.Scanner(System.in);
+		
+		System.out.print("Enter extremely prime number: ");
+		int a = kb.nextInt();
+		
+		if(NumberUtil.isPrimeX(a) == true)
+			System.out.println(a + " is xPrime");
+		else
+			System.out.println( a + " is not xPrime, try 43, 47...");
+		
+	}
+}
+
+class NumberUtil {		
+   public static boolean isPrime(long a)
+   {
+	   if(a <= 1)
+		   return false;
+	   
+	   if(a % 2 == 0)
+		   return a == 2;
+	   
+	   for(int i = 3; i * i <= a; i += 2) {
+		   if(a % i == 0)
+			   return false;
+	   }
+	   
+		return true;
+   }
+   
+   public static int sumDigits(int a) {
+	   int sumOfDigits = 0;
+	   int digit = 0;
+	   while(a > 0) {
+		  digit = a % 10;
+		  sumOfDigits += digit;
+		  a /= 10;
+	   }	   
+	   return sumOfDigits;
+   }
+   
+   public static int numOfDigits(int a) {
+	   int count = 0;
+	   
+	   while(a != 0) {
+		   a /= 10;
+		   count++;
+	   }
+	   
+	   return count;
+   }
+   
+   public static boolean isPrimeX(int a) {
+	   
+	   if(NumberUtil.isPrime(a)==true) {
+		   while(NumberUtil.numOfDigits(a) != 1 && NumberUtil.isPrime(a) == true) {
+			   a = NumberUtil.sumDigits(a);		   
+		   }   
+	   }	   
+	   if(NumberUtil.isPrime(a) == true)
+		   return true;
+	   
+	   return false;
+   }
+}
+
+/*
+	HW3-Ex3
+-------------------------------------------------------------------------------------------------------
+*/
+
+package csd;
+
+
+class App {
+       public static void main(String [] args)
+       {
+              Test.run();          
+       }
+}
+
+
+class Test{
+	public static void run() {
+		java.util.Scanner kb = new java.util.Scanner(System.in);
+		
+		System.out.print("Enter number for digital root: ");
+		int a = kb.nextInt();
+		System.out.print(NumberUtil.calculateDigitalRoot(a));
+	}
+}
+
+class NumberUtil {		
+   
+   public static int sumDigits(int a) {
+	   int sumOfDigits = 0;
+	   int digit = 0;
+	   while(a > 0) {
+		  digit = a % 10;
+		  sumOfDigits += digit;
+		  a /= 10;
+	   }	   
+	   return sumOfDigits;
+   }
+   
+   public static int numOfDigits(int a) {
+	   int count = 0;
+	   
+	   while(a != 0) {
+		   a /= 10;
+		   count++;
+	   }
+	   
+	   return count;
+   }
+
+   public static int calculateDigitalRoot(int a){
+	   int digitalRoot = 0;
+	   
+	   while(NumberUtil.numOfDigits(a) != 1) {
+		   a = NumberUtil.sumDigits(a);
+		   digitalRoot = a;
+	   }
+	   
+	   return digitalRoot;
+   }
+}
+
+/*
+	HW3-Ex4
+-------------------------------------------------------------------------------------------------------
+*/
+
+package csd;
+
+
+class App {
+       public static void main(String [] args)
+       {
+              Test.run();          
+       }
+}
+
+
+class Test{
+	public static void run() {
+		for(long i = 1; i < 100000; i++) {
+			if(NumberUtil.isFactorian(i) == true)
+				System.out.println("Found factorian number: " + i);
+		}
+	}
+}
+
+class NumberUtil {		
+	public static boolean isFactorian(long a) {
+		long sumOfFactorials = 0;
+		long isNumberFactorial = 0;
+		
+		isNumberFactorial = a;
+		
+		while(a != 0) {
+			sumOfFactorials += NumberUtil.calculateFactorial(a % 10);
+			a /= 10;
+		}
+		
+		if(sumOfFactorials == isNumberFactorial)
+			return true;
+		
+		return false;
+	}
+	
+	public static long calculateFactorial(long a) {
+	   long factorial = 1;
+	   
+	   for(int i = 1; i <= a; i++) {
+		   factorial = factorial * i;
+	   }
+	   
+	   return factorial;
+   }
+}
+
+/*
+	HW3-Ex5
+-------------------------------------------------------------------------------------------------------
+*/
+
+package csd;
+
+
+class App {
+       public static void main(String [] args)
+       {
+              Test.run();          
+       }
+}
+
+
+class Test{
+	public static void run() {
+		java.util.Scanner kb = new java.util.Scanner(System.in);
+		
+		System.out.print("Enter number to see if it's super prime: ");
+		int a = kb.nextInt();
+		
+		if(NumberUtil.isSuperPrime(a) == true)
+			System.out.println("It's super prime");
+		else
+			System.out.println("It's not super prime");
+	}
+}
+
+class NumberUtil {		
+	public static boolean isPrime(long a)
+	   {
+		   if(a <= 1)
+			   return false;
+		   
+		   if(a % 2 == 0)
+			   return a == 2;
+		   
+		   for(int i = 3; i * i <= a; i += 2) {
+			   if(a % i == 0)
+				   return false;
+		   }
+		   
+			return true;
+	   }
+	
+	public static boolean isSuperPrime(long a) {
+		long primeIndex = 1;
+		
+		if(NumberUtil.isPrime(a) == true) {
+			for(long i = 1; i < a; i++) {
+				if(NumberUtil.isPrime(i) == true)
+					primeIndex++;
+			}
+			if(NumberUtil.isPrime(primeIndex) == true)
+				return true;
+		}
+		return false;
+	}
+}
+
+/*
+	HW3-Ex7
+-------------------------------------------------------------------------------------------------------
+*/
+
+package csd;
+
+
+class App {
+       public static void main(String [] args)
+       {
+              Test.run();          
+       }
+}
+
+
+class Test{
+	public static void run() {
+		java.util.Scanner kb = new java.util.Scanner(System.in);
+		
+		System.out.print("Enter number to see if it's a harshad number: ");
+		int a = kb.nextInt();
+		
+		if(NumberUtil.isHarshad(a) == true)
+			System.out.println("It's harshad number");
+		else
+			System.out.println("It's NOT harshad number");
+	}
+}
+
+class NumberUtil {		
+	public static boolean isHarshad(int a) {
+		
+		return (a >= 0) && (a % (NumberUtil.sumDigits(a)) == 0);
+	}
+	
+	public static int sumDigits(int a) {
+		   int sumOfDigits = 0;
+		   int digit = 0;
+		   while(a > 0) {
+			  digit = a % 10;
+			  sumOfDigits += digit;
+			  a /= 10;
+		   }	   
+		   return sumOfDigits;
+	   }
+}
+
+/*
+	HW3-Ex8
+-------------------------------------------------------------------------------------------------------
+*/
+
+package csd;
+
+
+class App {
+       public static void main(String [] args)
+       {
+              Test.run();          
+       }
+}
+
+class Test{
+	public static void run() {
+		java.util.Scanner kb = new java.util.Scanner(System.in);
+		
+		System.out.print("Enter number: ");
+		int a = kb.nextInt();
+		
+		NumberUtil.printCollatz(a);		
+	}
+}
+
+class NumberUtil {		
+	public static void printCollatz(int n) {
+		int count = 0;
+		while(n != 1) {
+			if(n % 2 != 0)
+				n = 3 * n + 1;
+			else 
+				n = n/2;
+			
+			System.out.print(n + " ");
+			count++;
+			if(count % 10 == 0)
+				System.out.println();
+		}
+	}
+}
